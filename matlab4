@@ -1,0 +1,34 @@
+am=5;
+fm=10;
+fc=100;
+mi=1;
+fs=200e3;
+T=1/fs;
+t=0:T:1;
+ms=am.*cos(2*pi*fm*t);
+cs=cos(2*pi*fc*t);
+fmod=cos((2*pi*fc*t)+am.*(mi.*sin(2*pi*fm*t)));
+fdmod=fmdemod(fmod,fc,fs,10);
+subplot(411);
+plot(t,ms,".-","Color","b");
+xlabel("time");
+ylabel("amplitude");
+title("Message signal");
+
+subplot(412);
+plot(t,cs,".-","Color","r");
+xlabel("time");
+ylabel("amplitude");
+title("carrier signal");
+
+subplot(413);
+plot(t,fmod,".-","Color","m");
+xlabel("time");
+ylabel("amplitude");
+title("Modulated signal");
+
+subplot(414);
+plot(t,fdmod,".-","Color","c");
+xlabel("time");
+ylabel("amplitude");
+title("demodulated Signal");
