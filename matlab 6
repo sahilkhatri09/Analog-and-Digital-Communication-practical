@@ -1,0 +1,52 @@
+pcm
+fs=20
+T=1/fs;
+t=0:T:1-T;
+n=4;
+Vmax=1;
+Fm=1;
+Levels=2^n;
+disp("NO OF LEVELS : ");
+MS=Vmax*(cos(2*pi*Fm*t));
+
+subplot(311);
+plot(t,MS,"LineWidth",2,"color","b");
+xlabel("time");
+ylabel("Amplitude");
+title("INPUT ANALOG SIGNAL");
+
+subplot(312);
+stem(t,MS,"LineWidth",2,"color","m");
+xlabel("time");
+ylabel("Amplitude");
+title("SAMPLES OF INPUT ANALOG SIGNAL");
+
+Vmin=-Vmax;
+StepSize=(Vmax-Vmin)/Levels;
+disp("QUANTIZATION LEVELS : ");
+QLevels=Vmin:StepSize:Vmax;
+i=1;
+L1=QLevels(i);
+L2=QLevels(i+1);
+%difference between two quantization QLevels
+diff=L2-L1;
+disp("difference between two quantization QLevels : ")
+disp(diff);
+
+codebook=Vmin-(StepSize/2):StepSize:Vmax+(StepSize/2);
+[ind,q] = quantiz(MS,QLevels,codebook);
+nonzeroind=find(ind~=0);
+ind(nonzeroind)=ind(nonzeroind)-1;
+belowVminind=find(q==Vmin-(StepSize/2));
+q(belowVminind)=Vmax+(StepSize/2);
+
+final_signal= de2bi(ind);
+serial_code=final_signal(:,n);
+disp("TRANSMITTED BITS");
+disp(serial_code);
+subplot(313);
+stairs(t,serial_code,"color","R","LineWidth",2);
+axis([0 1 -2 2]);
+xlabel("time");
+ylabel("Amplitude");
+title("PCM ENCODED SIGNAL");
