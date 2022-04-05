@@ -1,0 +1,23 @@
+sample and hold sampling
+fs=100;
+t=0:1/fs:1-1/fs;
+am=1;
+fm=5;
+
+ms=am*(cos(2*pi*fm*t));
+subplot(211);
+plot(t,ms,".-","Color","r");
+xlabel("time");
+ylabel("amplitude");
+title("input analog signal");
+
+subplot(212);
+stem(t,ms,".-","color","b")
+hold on
+stairs(t,ms,".-","color","m")
+hold off
+xlabel("time");
+ylabel("amplitude");
+title("sample and hold sampled signal")
+
+
