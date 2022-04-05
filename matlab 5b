@@ -1,0 +1,47 @@
+t=0:0.001:1;
+flat top sampling
+am=1;
+fm=5;
+fc=50;
+ms=am*(cos(2*pi*fm*t));
+cs=square(2*pi*fc*t);
+n=length(cs);
+for i=1:n
+    if cs(i)<=0
+       cs(i)=0;
+    else
+        cs(i)=1;
+    end
+end
+y=cs.*ms;
+
+for i=2:n
+    if cs(i)==1 && cs(i-1)==0
+        y(i)=cs(i).*ms(i);
+    elseif cs(i)==1 && cs(i-1)==1
+         y  (i)=y(i-1);
+    else 
+        y(i)=0;
+    end
+end
+
+subplot(311);
+plot(t,ms,".-","Color","b");
+xlabel("time");
+ylabel("amplitude");
+title("Input Analog Signal");
+
+subplot(312);
+plot(t,cs,".-","Color","r");
+xlabel("time");
+ylabel("amplitude");
+title("Digital carrier signal");
+axis([0 1 0 2]);
+
+subplot(313);
+plot(t,y,".-","Color","m");
+xlabel("time");
+ylabel("amplitude");
+title("flat top sampled signal");
+
+
